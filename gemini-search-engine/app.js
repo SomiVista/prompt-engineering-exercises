@@ -1,30 +1,30 @@
-function getApiKey() {
-  const key = document.querySelector("#api_key").value.trim();
-  return key;
+function getSelectedModel() {
+  const modelSelect = document.querySelector("#modelSelect");
+  return modelSelect.value;
 }
 
 class GeminiSearch {
-  constructor() {
-    this.apiKey = getApiKey();
-    this.apiUrl =
-      "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent";
+  apiKey = "";
 
+  constructor() {
     this.searchInput = document.getElementById("searchInput");
     this.searchButton = document.getElementById("searchButton");
     this.resultDiv = document.getElementById("result");
     this.loadingDiv = document.getElementById("loading");
+    this.modelSelect = document.getElementById("modelSelect");
 
     this.init();
   }
 
   init() {
     this.searchButton.addEventListener("click", () => this.handleSearch());
-    // Add enter key support
-    this.searchInput.addEventListener("keypress", (e) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        this.handleSearch();
-      }
+
+    //
+    this.apiKey = localStorage.getItem("apiKey");
+    document.getElementById("api_key").value = this.apiKey;
+    document.getElementById("api_key").addEventListener("input", (ev) => {
+      this.apiKey = ev.target.value;
+      localStorage.setItem("apiKey", this.apiKey);
     });
   }
 
@@ -35,7 +35,16 @@ class GeminiSearch {
       return;
     }
 
+    if (!this.apiKey) {
+      alert("Please enter your API key");
+      return;
+    }
+
+    const selectedModel = getSelectedModel();
+    this.apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent`;
+
     this.setLoading(true);
+    this.resultDiv.innerHTML = "";
     try {
       const response = await this.searchGemini(query);
       this.displayResult(response);
@@ -114,7 +123,7 @@ class GeminiSearch {
             <div class="result-content">
                 ${htmlContent}
                 <div class="metadata">
-                    <div>Model: ${response.modelVersion || "Unknown"}</div>
+                    <div>Model: ${getSelectedModel()}</div>
                     <div>Tokens: ${promptTokens} (prompt) + ${responseTokens} (response) = ${totalTokens} total</div>
                 </div>
             </div>

@@ -19,15 +19,31 @@
                         <h3 class="text-center mb-0">Gemini Search</h3>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>API Key:</label>
-                            <input type="text" id="api_key" />
+                        <div class="form-group mb-3">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-7">
+                                        <input type="text" id="api_key" class="form-control search-input mb-3"
+                                            placeholder="Enter your Google API key..." />
+                                    </div>
+                                    <div class="col-5">
+                                        <select id="modelSelect" class="form-select search-input">
+                                            <option value="gemini-2.0-flash-exp">Gemini 2.0 Flash Exp</option>
+                                            <option value="gemini-1.5-flash-latest">Gemini 1.5 Flash Latest</option>
+                                            <option value="gemini-1.5-pro-latest">Gemini 1.5 Pro Latest</option>
+                                            <option value="gemini-pro">Gemini Pro</option>
+                                            <option value="gemini-pro-vision">Gemini Pro Vision</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea id="searchInput" class="form-control search-input mb-3" rows="4"
+                                            placeholder="Enter your search query..."></textarea>
+                                    </div>
+                                    <button id="searchButton" class="btn search-button w-100">Search</button>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <textarea id="searchInput" class="form-control search-input mb-3" rows="4"
-                                placeholder="Enter your search query..."></textarea>
-                        </div>
-                        <button id="searchButton" class="btn search-button w-100">Search</button>
+
                         <div id="result" class="mt-4"></div>
                         <div id="loading" class="text-center d-none">
                             <div class="spinner-border text-primary" role="status">
